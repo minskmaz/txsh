@@ -167,8 +167,7 @@ class TxShProcessProtocol(protocol.ProcessProtocol):
         """If stdout or stdout redirection is activated, this will
         return none.
         """
-
-        return ''.join(obj) if type(obj) is list else None
+        return ''.join([str(x) for x in obj]) if isinstance(obj, list) else None
 
     def processEnded(self, status):
         """This is called when all the file descriptors associated with the
@@ -185,6 +184,10 @@ class TxShProcessProtocol(protocol.ProcessProtocol):
             log.msg('onProcessEnded', status)
 
         self.close_streams()
+
+        #print(type(self._stdout))
+        #print(type(self._stderr))
+
         stdout = self.get_output(self._stdout)
         stderr = self.get_output(self._stderr)
 

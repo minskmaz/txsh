@@ -4,8 +4,8 @@ import os
 
 from twisted.internet import reactor
 
-from resolvers import resolve_command, which
-from protocols import TxShProcessProtocol, DeferredProcess
+from txsh.resolvers import resolve_command, which
+from txsh.protocols import TxShProcessProtocol, DeferredProcess
 
 
 class Command(object):
@@ -121,7 +121,8 @@ class Command(object):
     def _is_string(self, obj):
         """Checks if a object is a string.
         """
-        return isinstance(obj, unicode) or isinstance(obj, str)
+        #return isinstance(obj, unicode) or isinstance(obj, str)
+        return isinstance(obj, str)
 
     def __call__(self, *args, **kwargs):
         """Used when the import command is called. A few special (and optional)

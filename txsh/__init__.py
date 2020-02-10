@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import sys
 from types import ModuleType
 
-from core import Environment
+from txsh.core import Environment
+
+import os
+
+
 
 
 class DynamicModule(ModuleType):
