@@ -104,14 +104,14 @@ class Command(object):
 
         return args
 
-    def _spawn(self, protocol, args, env=None):
+    def _spawn(self, protocol, args, env=None, path=None):
         """Returns an object which provides IProcessTransport.
 
         :param protocol: An instance of `TxShProcessProtocol`.
         :param args: The arguments to be passed into the process.
         :param env: The environment variables.
         """
-        return reactor.spawnProcess(protocol, self.cmd, args, env=env)
+        return reactor.spawnProcess(protocol, self.cmd, args, env=env, path=path)
 
     def _make_protocol(self, **kwargs):
         """Returns a `TxShProcessProtocol`.
@@ -148,6 +148,7 @@ class Command(object):
         _in = kwargs.pop('_in', None)
         _out = kwargs.pop('_out', None)
         _err = kwargs.pop('_err', None)
+        _cwd = kwargs.pop('_cwd', None)
 
         if self._is_string(_out):
             _out = open(_out, 'wb')
@@ -161,7 +162,7 @@ class Command(object):
             d.addCallback(lambda exc: exc.stdout)
             d.addCallback(lambda stdout: self._make_protocol(stdout, debug))
             d.addCallback(
-                lambda protocol: self._spawn(protocol, [self.cmd], env))
+                lambda protocol: self._spawn(protocol, [self.cmd], env, _cwd))
             d.addCallback(lambda process: process.proto._process_deferred)
             return d
 
@@ -174,7 +175,7 @@ class Command(object):
         if self.subcommand:
             args.insert(1, self.subcommand)
         args.extend(self._args)
-        process = self._spawn(txsh_protocol, args, env)
+        process = self._spawn(txsh_protocol, args, env, _cwd)
         return process.proto._process_deferred
 
 

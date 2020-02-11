@@ -8,9 +8,6 @@ from txsh.core import Environment
 
 import os
 
-
-
-
 class DynamicModule(ModuleType):
     def __init__(self, self_module, baked_args={}):
         for attr in ["__builtins__", "__doc__", "__name__", "__package__"]:
